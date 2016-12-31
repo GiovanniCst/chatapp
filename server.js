@@ -24,7 +24,7 @@ function sendFile(response, filePath, fileContents) {
 
 // Helper function - Cache dei file statici
 
-function seveStatic(response, cache, absPath) {
+function serveStatic(response, cache, absPath) {
     // Il file è già in memoria?
     if (cache[absPath]) {
         // Servi il file dalla memoria
@@ -50,6 +50,48 @@ function seveStatic(response, cache, absPath) {
         });
     }
 }
+
+
+// Crea il server http
+
+var server = http.createServer(function (request, response) {
+    var filePath = false;
+
+    if (request.url === '/') {
+        //file HTML che viene servito di default
+        filePath = 'public/index.html';
+    } else {
+        //traduci l'url richiesto in un path relativo
+        filePath = 'public' + request.url;
+    }
+    var absPath = './' + filePath;
+    //Servi un file statico
+    serveStatic(response, cache, absPath);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
