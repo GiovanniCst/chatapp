@@ -69,6 +69,10 @@ var server = http.createServer(function (request, response) {
     serveStatic(response, cache, absPath);
 });
 
+server.listen(process.env.PORT || 3000, function () {
+    console.log("Server started");
+});
+
 
 
 
