@@ -5,6 +5,7 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 var mime = require('mime');
+var chatServer = require('./lib/chat_server');
 var cache = {};
 
 // Helper function - 404 risorsa non trovata
@@ -73,7 +74,8 @@ server.listen(process.env.PORT || 3000, function () {
     console.log("Server started");
 });
 
-
+// Start the Socket.io server e lo binda alla stessa porta del server
+chatServer.listen(server);
 
 
 
