@@ -29,3 +29,22 @@ function processUserInput(chatApp, socket) {
         $('#send-message').val('');
     }
 }
+
+
+// Logica da eseguire nel momento in cui la pagina è totalmente caricata
+
+var socket = io.connect();
+
+$(document).ready(function () {
+    var chatApp = new Chat(socket);
+
+    // Visualizza il risultato di un tentativo di cambio nick
+    socket.on('nameResult', function (result) {
+        var message;
+        if (result.success) {
+            message = 'Ti sei ribattezzato ' + result.name + '.';
+        } else {
+            message = result.message;
+        }
+        $('#messages').append(divSystemContentElement(message));
+    });
