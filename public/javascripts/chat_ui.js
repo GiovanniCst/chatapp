@@ -48,3 +48,46 @@ $(document).ready(function () {
         }
         $('#messages').append(divSystemContentElement(message));
     });
+
+    //Mostra il risultato di un cambio stanza
+    socket.on('joinResult', function (result) {
+        $('#room').text(result.room);
+        $('#messages').append(divSystemContentElement('Room changed.'));
+    });
+
+    //Mostra i messaggi ricevuti
+    socket.on('message', function (message) {
+        var newElement = $('<div></div>').text(message.text);
+        $('#messages').append(newElement);
+    });
+
+    //Mostra l'elenco delle stanze disponibili
+    socket.on('rooms', function (rooms) {
+        $('#room-list').empty();
+
+        for (var room in roomes) {
+            room = room.substring(1, room.length);
+            if (room != '') {
+                $('#room-list').append(divEscapedContentElement(room));
+            }
+        }
+        //Consenti di cliccare sul nome di una stanza per joinare
+        $('#room-list div').click(function() {
+            chatApp.processCommand('/join ' + $(this).text());
+            $('#send-message').focus();
+        });
+    });
+    //Richiedi l'elenco delle stanze disponibili ad intervalli regolari
+    setInterval(function() {
+        socket.emit('rooms');
+    }, 1000);
+
+    $('#send-message').focus();
+
+    //invia il form per inviare il messaggio
+
+    $('#send-form').submit(function() {
+        processUserInput(chatApp, socket);
+        return false;
+    });
+});
