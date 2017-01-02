@@ -1,7 +1,6 @@
 /*jslint node: true */
 "use strict";
 
-
 // Sanitize users' messages
 function divEscapedContentElement(message) {
     return $('<div></div>').text(message);
@@ -65,7 +64,7 @@ $(document).ready(function () {
     socket.on('rooms', function (rooms) {
         $('#room-list').empty();
 
-        for (var room in roomes) {
+        for (var room in rooms) {
             room = room.substring(1, room.length);
             if (room != '') {
                 $('#room-list').append(divEscapedContentElement(room));
